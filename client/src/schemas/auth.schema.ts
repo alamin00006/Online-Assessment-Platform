@@ -6,3 +6,4 @@ export const loginSchema = z.object({
 });
 
 export type LoginForm = z.infer<typeof loginSchema>;
+

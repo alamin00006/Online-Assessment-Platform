@@ -1,4 +1,5 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
+// Imports reusable UI.
 import { Button } from "@/components/ui/button";
 
 interface DashboardPaginationProps {
@@ -35,7 +36,7 @@ export const DashboardPagination = ({
           onClick={() => onPageChange(i + 1)}
           className={
             page === i + 1
-              ? "h-7 min-w-7 rounded-[6px] bg-[#5c2ef5] px-2 text-xs text-white"
+              ? "h-7 min-w-7 rounded-[6px] bg-primary px-2 text-xs text-primary-foreground"
               : "h-7 min-w-7 rounded-[6px] border-[#e6ebf2] px-2 text-xs text-[#64748b]"
           }
         >

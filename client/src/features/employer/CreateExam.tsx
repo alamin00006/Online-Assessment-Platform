@@ -16,6 +16,7 @@ import {
   EditingQuestionState,
   QuestionSetsStep,
 } from "@/components/create-exam";
+// Imports reusable UI.
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { api } from "@/services/api";
@@ -64,7 +65,7 @@ const CreateExam = () => {
           title: data.title,
           totalCandidates: Number.parseInt(data.totalCandidates, 10),
           totalSlots: Number.parseInt(data.totalSlots, 10),
-          duration: Number.parseInt(data.duration, 10),
+          duration: Number.parseInt(data.duration ?? "0", 10),
           startTime: data.startTime,
           endTime: data.endTime,
           questionSets,
@@ -144,7 +145,7 @@ const CreateExam = () => {
 
   return (
     <EmployerLayout>
-      <div className="mx-auto max-w-[1030px] space-y-6">
+      <div className=" space-y-6">
         <Card className="rounded-[12px] border border-[#e5ebf3] bg-white shadow-none">
           <CardContent className="space-y-6 p-5 sm:p-6">
             <div className="space-y-4">
@@ -162,7 +163,7 @@ const CreateExam = () => {
                   type="button"
                   variant="outline"
                   onClick={() => router.push("/employer")}
-                  className="h-[34px] rounded-[8px] border-[#e2e8f0] px-5 text-[12px] font-medium text-[#475569] hover:bg-[#f8fafc]"
+                  className="h-[34px] rounded-[8px] border-[#e2e8f0] px-5 text-[12px] font-medium text-[#475569] hover:bg-[#f8fafc] hover:text-[#334155]"
                 >
                   Back to Dashboard
                 </Button>

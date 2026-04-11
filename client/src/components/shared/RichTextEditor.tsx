@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 // Rich text editor used for question content and inline rich text fields.
 // Included in the assessment client for better exam authoring.
 
@@ -48,7 +48,7 @@ content,
   if (!editor) return null;
 
   return (
-    <div className="overflow-hidden rounded-[8px] border border-[#e7edf5] bg-white transition-all focus-within:border-[#8b5cf6] focus-within:shadow-[0_0_0_3px_rgba(139,92,246,0.08)]">
+    <div className="overflow-hidden rounded-[8px] border border-[#e7edf5] bg-white transition-all focus-within:border-primary focus-within:shadow-[0_0_0_3px_hsl(var(--primary)/0.08)]">
       {/* Toolbar */}
       <div className="flex items-center gap-0.5 border-b border-[#edf1f7] bg-[#fbfcfe] px-2 py-1.5">
         <button

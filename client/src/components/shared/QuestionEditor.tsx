@@ -5,6 +5,8 @@
 import { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "sonner";
+// Imports reusable UI.
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -20,11 +22,9 @@ import { Plus, Trash2 } from "lucide-react";
 import { RichTextEditor } from "./RichTextEditor";
 import { questionSchema, type QuestionForm } from "@/schemas/question.schema";
 
-
 interface QuestionEditorProps {
   onSave: (question: Question) => void;
   onSaveAndAddMore?: (question: Question) => void;
-  onCancel: () => void;
   initialData?: Question;
 }
 
@@ -32,11 +32,10 @@ interface QuestionEditorProps {
 export const QuestionEditor = ({
   onSave,
   onSaveAndAddMore,
-  onCancel,
   initialData,
 }: QuestionEditorProps) => {
   const [options, setOptions] = useState<string[]>(
-    initialData?.options || ["", "", ""],
+    initialData?.options || ["", ""],
   );
   const [correctAnswers, setCorrectAnswers] = useState<string[]>(
     initialData?.correctAnswer
@@ -68,7 +67,7 @@ export const QuestionEditor = ({
         type: initialData.type,
         points: String(initialData.points || 1),
       });
-      setOptions(initialData.options || ["", "", ""]);
+      setOptions(initialData.options || ["", ""]);
       setQuestionType(initialData.type);
       setCorrectAnswers(
         initialData.correctAnswer
@@ -117,10 +116,28 @@ export const QuestionEditor = ({
       points: "1",
     });
     setQuestionType("radio");
-    setOptions(["", "", ""]);
+    setOptions(["", ""]);
     setCorrectAnswers([]);
     setTextAnswer("");
     setSaveMode("save");
+  };
+
+  // Removes an answer option while keeping at least one editable option available.
+  const removeOption = (optionIndex: number) => {
+    if (options.length <= 1) {
+      toast.warning("At least one option is required.");
+      return;
+    }
+
+    const removedOption = options[optionIndex];
+    setOptions(
+      options.filter(
+        (_, currentOptionIndex) => currentOptionIndex !== optionIndex,
+      ),
+    );
+    setCorrectAnswers((currentCorrectAnswers) =>
+      currentCorrectAnswers.filter((answer) => answer !== removedOption),
+    );
   };
 
   // Persists the current question and decides whether the editor should reset or close.
@@ -139,7 +156,7 @@ export const QuestionEditor = ({
   });
 
   return (
-    <div className="rounded-[14px] border border-[#e7edf5] bg-white p-4 shadow-none sm:p-5">
+    <div className="rounded-[14px] border border-[#e7edf5] bg-white px-5 py-4 shadow-none sm:px-7 sm:py-5">
       <div className="mb-4 flex flex-col gap-3 border-b border-[#edf1f7] pb-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-2 text-[12px] font-semibold text-[#334155]">
           <span className="flex h-[18px] w-[18px] items-center justify-center rounded-full border border-[#cbd5e1] text-[10px]">
@@ -175,28 +192,22 @@ export const QuestionEditor = ({
               <SelectItem value="text">Text</SelectItem>
             </SelectContent>
           </Select>
-          <button
-            type="button"
-            onClick={onCancel}
-            className="rounded-[6px] p-1.5 text-[#94a3b8] transition-colors hover:bg-[#f8fafc] hover:text-[#ef4444]"
-            aria-label="Close editor"
-          >
-            <Trash2 className="h-4 w-4" />
-          </button>
         </div>
       </div>
 
       <FormProvider {...methods}>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <RichTextEditor
-              content={methods.getValues("title")}
-              onChange={(value) =>
-                methods.setValue("title", value, { shouldValidate: true })
-              }
-              placeholder="Enter question..."
-              minHeight="96px"
-            />
+            <div className="-mx-1 sm:-mx-2">
+              <RichTextEditor
+                content={methods.getValues("title")}
+                onChange={(value) =>
+                  methods.setValue("title", value, { shouldValidate: true })
+                }
+                placeholder="Enter question..."
+                minHeight="96px"
+              />
+            </div>
             {methods.formState.errors.title && (
               <p className="text-xs text-destructive">
                 {methods.formState.errors.title.message}
@@ -226,36 +237,22 @@ export const QuestionEditor = ({
                         <input
                           type={questionType === "radio" ? "radio" : "checkbox"}
                           checked={correctAnswers.includes(option) && !!option}
-                          onChange={() =>
-                            option && toggleCorrectAnswer(option)
-                          }
-                          className="h-3.5 w-3.5 rounded border-[#cbd5e1] text-[#6d28d9] focus:ring-[#6d28d9]"
+                          onChange={() => option && toggleCorrectAnswer(option)}
+                          className="h-3.5 w-3.5 rounded border-[#cbd5e1] text-primary focus:ring-primary"
                         />
                         Set as correct answer
                       </label>
                     </div>
-                    {options.length > 2 && (
-                      <button
-                        type="button"
-                        className="rounded-[6px] p-1.5 text-[#94a3b8] transition-colors hover:bg-[#f8fafc] hover:text-[#ef4444]"
-                        onClick={() => {
-                          const removedOption = options[optionIndex];
-                          setOptions(
-                            options.filter(
-                              (_, currentOptionIndex) =>
-                                currentOptionIndex !== optionIndex,
-                            ),
-                          );
-                          setCorrectAnswers((currentCorrectAnswers) =>
-                            currentCorrectAnswers.filter(
-                              (answer) => answer !== removedOption,
-                            ),
-                          );
-                        }}
-                      >
-                        <Trash2 className="h-3.5 w-3.5" />
-                      </button>
-                    )}
+                    <button
+                      type="button"
+                      className="rounded-[6px] p-1.5 text-[#94a3b8] transition-colors hover:bg-[#f8fafc] hover:text-[#ef4444]"
+                      onClick={() => removeOption(optionIndex)}
+                      aria-label={`Delete option ${String.fromCharCode(
+                        65 + optionIndex,
+                      )}`}
+                    >
+                      <Trash2 className="h-3.5 w-3.5" />
+                    </button>
                   </div>
                   <div className="rounded-[10px] border border-[#edf1f7] bg-white">
                     <RichTextEditor
@@ -285,9 +282,9 @@ export const QuestionEditor = ({
               <button
                 type="button"
                 onClick={() => setOptions([...options, ""])}
-                className="inline-flex items-center gap-1 text-[12px] font-medium text-[#6d28d9] hover:underline"
+                className="inline-flex items-center gap-1 text-[12px] font-medium  hover:underline"
               >
-                <Plus className="h-3 w-3" />
+                <Plus className="h-3 w-3 text-primary" />
                 Another options
               </button>
             </div>
@@ -322,14 +319,14 @@ export const QuestionEditor = ({
             <Button
               type="submit"
               onClick={() => setSaveMode("save")}
-              className="h-[34px] min-w-[94px] rounded-[8px] border border-[#8b5cf6] bg-white px-6 text-[12px] font-medium text-[#6d28d9] shadow-none hover:bg-[#f8f5ff]"
+              className="h-[34px] min-w-[94px] rounded-[8px] border border-primary bg-white px-6 text-[12px] font-medium text-primary shadow-none hover:bg-primary/5"
             >
               Save
             </Button>
             <Button
               type="submit"
               onClick={() => setSaveMode("saveAndAddMore")}
-              className="h-[34px] min-w-[126px] rounded-[8px] bg-[linear-gradient(90deg,#5c2ef5_0%,#7438f7_100%)] px-5 text-[12px] font-medium text-white shadow-none hover:opacity-95"
+              className="h-[34px] min-w-[126px] rounded-[8px] bg-primary px-5 text-[12px] font-medium text-primary-foreground shadow-none hover:bg-primary/90"
             >
               {initialData ? "Update Question" : "Save & Add More"}
             </Button>
@@ -339,8 +336,3 @@ export const QuestionEditor = ({
     </div>
   );
 };
-
-
-
-
-

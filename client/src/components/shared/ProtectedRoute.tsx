@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 // Protects pages by ensuring only authenticated users with the correct role can access them.
 import { ReactNode, useEffect } from "react";
@@ -35,5 +35,6 @@ export const ProtectedRoute = ({
 
   return <>{children}</>;
 };
+
 
 

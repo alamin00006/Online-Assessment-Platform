@@ -1,6 +1,7 @@
-"use client";
+﻿"use client";
 
 import { Exam } from '@/types';
+// Imports reusable UI.
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -65,7 +66,7 @@ export const ExamCard = ({
           )}
           {!isEmployer && extraInfo?.negativeMarking !== undefined && (
             <div className="flex items-center gap-2 text-muted-foreground">
-              <span className="text-xs">{extraInfo.negativeMarking ? '⚠️ Negative marking' : '✅ No negative marking'}</span>
+              <span className="text-xs">{extraInfo.negativeMarking ? 'âš ï¸ Negative marking' : 'âœ… No negative marking'}</span>
             </div>
           )}
         </div>
@@ -84,4 +85,5 @@ export const ExamCard = ({
     </Card>
   );
 };
+
 

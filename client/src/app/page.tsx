@@ -1,10 +1,11 @@
-"use client";
+﻿"use client";
 
 // Landing page for the assessment platform platform.
 // Redirects authenticated users to their role-specific dashboard.
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useAuthStore } from "@/stores/auth-store";
+// Imports reusable UI.
 import { Button } from "@/components/ui/button";
 import { Building2, GraduationCap, Shield } from "lucide-react";
 
@@ -53,10 +54,6 @@ const Index = () => {
             <span className="font-display text-base">Candidate Login</span>
           </Button>
         </div>
-
-        <p className="text-xs text-muted-foreground">
-          Demo credentials pre-filled on login pages
-        </p>
       </div>
     </div>
   );

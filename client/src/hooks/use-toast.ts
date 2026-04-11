@@ -1,5 +1,6 @@
 import * as React from "react";
 
+// Imports reusable UI.
 import type { ToastActionElement, ToastProps } from "@/components/ui/toast";
 
 const TOAST_LIMIT = 1;
@@ -197,3 +198,4 @@ const useToast = () => {
 };
 
 export { useToast, toast };
+

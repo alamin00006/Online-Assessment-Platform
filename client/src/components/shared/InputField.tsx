@@ -1,6 +1,7 @@
-"use client";
+﻿"use client";
 
 import { useFormContext } from 'react-hook-form';
+// Imports reusable UI.
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
@@ -34,4 +35,5 @@ export const InputField = ({ name, label, type = 'text', placeholder }: InputFie
     </div>
   );
 };
+
 

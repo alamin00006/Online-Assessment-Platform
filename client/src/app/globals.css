@@ -13,7 +13,7 @@
     --popover: 0 0% 100%;
     --popover-foreground: 220 25% 10%;
 
-    --primary: 235 70% 55%;
+    --primary: 263 70% 50%;
     --primary-foreground: 0 0% 100%;
 
     --secondary: 220 15% 93%;
@@ -30,15 +30,15 @@
 
     --border: 220 15% 90%;
     --input: 220 15% 90%;
-    --ring: 235 70% 55%;
+    --ring: 263 70% 50%;
 
     --radius: 0.75rem;
 
     /* Custom tokens */
-    --employer: 235 70% 55%;
+    --employer: 263 70% 50%;
     --employer-foreground: 0 0% 100%;
     --employer-muted: 235 60% 96%;
-    --employer-accent: 235 70% 45%;
+    --employer-accent: 263 70% 44%;
 
     --candidate: 170 60% 40%;
     --candidate-foreground: 0 0% 100%;
@@ -54,14 +54,27 @@
     --info: 210 90% 55%;
     --info-foreground: 0 0% 100%;
 
-    --gradient-employer: linear-gradient(135deg, hsl(235 70% 55%), hsl(260 65% 60%));
-    --gradient-candidate: linear-gradient(135deg, hsl(170 60% 40%), hsl(190 55% 45%));
-    --gradient-hero: linear-gradient(135deg, hsl(235 70% 55%) 0%, hsl(260 65% 60%) 50%, hsl(170 60% 45%) 100%);
+    --gradient-employer: linear-gradient(
+      135deg,
+      hsl(var(--primary)),
+      hsl(263 70% 58%)
+    );
+    --gradient-candidate: linear-gradient(
+      135deg,
+      hsl(170 60% 40%),
+      hsl(190 55% 45%)
+    );
+    --gradient-hero: linear-gradient(
+      135deg,
+      hsl(var(--primary)) 0%,
+      hsl(263 70% 58%) 50%,
+      hsl(170 60% 45%) 100%
+    );
 
     --shadow-sm: 0 1px 2px hsl(220 25% 10% / 0.05);
     --shadow-md: 0 4px 12px hsl(220 25% 10% / 0.08);
     --shadow-lg: 0 8px 30px hsl(220 25% 10% / 0.12);
-    --shadow-employer: 0 4px 20px hsl(235 70% 55% / 0.15);
+    --shadow-employer: 0 4px 20px hsl(var(--primary) / 0.15);
     --shadow-candidate: 0 4px 20px hsl(170 60% 40% / 0.15);
 
     --sidebar-background: 0 0% 98%;
@@ -84,7 +97,7 @@
     --card-foreground: 220 15% 95%;
     --popover: 220 25% 12%;
     --popover-foreground: 220 15% 95%;
-    --primary: 235 70% 60%;
+    --primary: 263 70% 58%;
     --primary-foreground: 0 0% 100%;
     --secondary: 220 20% 18%;
     --secondary-foreground: 220 15% 90%;
@@ -96,7 +109,7 @@
     --destructive-foreground: 210 40% 98%;
     --border: 220 20% 18%;
     --input: 220 20% 18%;
-    --ring: 235 70% 60%;
+    --ring: 263 70% 58%;
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
@@ -116,7 +129,12 @@
     @apply bg-background text-foreground;
     font-family: var(--font-body);
   }
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     font-family: var(--font-display);
   }
 }
@@ -142,5 +160,26 @@
   }
   .shadow-candidate {
     box-shadow: var(--shadow-candidate);
+  }
+
+  /* Custom scrollbar styling */
+  .scrollbar-custom::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  .scrollbar-custom::-webkit-scrollbar-track {
+    background: #f3f4f6;
+    border-radius: 4px;
+  }
+
+  .scrollbar-custom::-webkit-scrollbar-thumb {
+    background: #d1d5db;
+    border-radius: 4px;
+    transition: background 0.2s;
+  }
+
+  .scrollbar-custom::-webkit-scrollbar-thumb:hover {
+    background: #9ca3af;
   }
 }

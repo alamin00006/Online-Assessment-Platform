@@ -1,4 +1,5 @@
-﻿import { ReactNode } from "react";
+import { ReactNode } from "react";
+// Imports reusable UI.
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { AppHeader, AppShell } from "@/components/shared";
@@ -56,6 +57,7 @@ export const ExamStatusScreen = ({
     </div>
   </AppShell>
 );
+
 
 
 

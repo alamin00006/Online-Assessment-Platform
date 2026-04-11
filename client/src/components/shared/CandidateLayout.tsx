@@ -47,3 +47,4 @@ export const CandidateLayout = ({ children }: { children: ReactNode }) => {
 
 
 
+

@@ -1,4 +1,5 @@
 import { Clock } from "lucide-react";
+// Imports reusable UI.
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 
@@ -34,5 +35,6 @@ export const TimeoutOverlay = ({ description, onBack }: TimeoutOverlayProps) => 
     </Card>
   </div>
 );
+
 
 

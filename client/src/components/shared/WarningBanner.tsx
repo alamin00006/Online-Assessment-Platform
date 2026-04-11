@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { AlertTriangle, WifiOff } from 'lucide-react';
 
@@ -24,4 +24,5 @@ export const WarningBanner = ({ message, variant = 'warning' }: WarningBannerPro
     </div>
   );
 };
+
 

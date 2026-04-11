@@ -1,4 +1,5 @@
-﻿import { Checkbox } from "@/components/ui/checkbox";
+// Imports reusable UI.
+import { Checkbox } from "@/components/ui/checkbox";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { RichTextEditor } from "@/components/shared";
 import { Button } from "@/components/ui/button";
@@ -73,7 +74,7 @@ export const ExamQuestionCard = ({
                       : selected.filter((item) => item !== option);
                     onAnswerChange(question.id, next);
                   }}
-                  className="h-[14px] w-[14px] rounded-[3px] border-[#cbd5e1] data-[state=checked]:border-[#7c3aed] data-[state=checked]:bg-[#7c3aed]"
+                  className="h-[14px] w-[14px] rounded-[3px] border-[#cbd5e1] data-[state=checked]:border-primary data-[state=checked]:bg-primary"
                 />
                 <span>{option}</span>
               </label>
@@ -104,7 +105,7 @@ export const ExamQuestionCard = ({
         <Button
           type="button"
           onClick={onNext}
-          className="h-[42px] w-full rounded-[10px] bg-[linear-gradient(90deg,#5c2ef5_0%,#7438f7_100%)] px-5 text-sm font-medium text-white shadow-none hover:opacity-95 sm:h-[38px] sm:w-auto sm:rounded-[8px]"
+          className="h-[42px] w-full rounded-[10px] bg-primary px-5 text-sm font-medium text-primary-foreground shadow-none hover:bg-primary/90 sm:h-[38px] sm:w-auto sm:rounded-[8px]"
         >
           {questionNumber < totalQuestions - 1 ? "Save & Continue" : "Submit"}
         </Button>

@@ -56,3 +56,4 @@ export const useTimer = (onTimeout: () => void) => {
     stop,
   };
 };
+

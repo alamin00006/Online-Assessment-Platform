@@ -1,4 +1,5 @@
 import { AlertTriangle, Clock, FileText } from "lucide-react";
+// Imports reusable UI.
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { CandidateExamAttempt, Exam } from "@/types";
@@ -59,7 +60,7 @@ export const CandidateExamCard = ({
           <Button
             variant="outline"
             onClick={onStart}
-            className="h-[31px] rounded-[8px] border-[#8b5cf6] px-8 text-[12px] font-medium text-[#7c3aed] transition-colors hover:bg-[#7c3aed] hover:text-white"
+            className="h-[31px] rounded-[8px] border-primary px-8 text-[12px] font-medium text-primary transition-colors hover:bg-primary hover:text-primary-foreground"
           >
             {attempt?.status === "in-progress" ? "Resume" : "Start"}
           </Button>

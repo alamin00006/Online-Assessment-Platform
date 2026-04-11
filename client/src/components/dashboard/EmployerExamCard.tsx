@@ -1,4 +1,5 @@
 import { Clock, FileText, Users } from "lucide-react";
+// Imports reusable UI.
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Exam } from "@/types";
@@ -46,7 +47,7 @@ export const EmployerExamCard = ({
       <Button
         variant="outline"
         onClick={onViewCandidates}
-        className="h-[31px] rounded-[8px] border-[#8b5cf6] px-4 text-[12px] font-medium text-[#7c3aed] transition-colors hover:bg-[#7c3aed] hover:text-white"
+        className="h-[31px] rounded-[8px] border-primary px-4 text-[12px] font-medium text-primary transition-colors hover:bg-primary hover:text-primary-foreground"
       >
         View Candidates
       </Button>

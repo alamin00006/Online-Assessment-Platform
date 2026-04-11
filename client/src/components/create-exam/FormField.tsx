@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+// Imports reusable UI.
 import { Label } from "@/components/ui/label";
 
 interface FormFieldProps {
@@ -21,5 +22,6 @@ export const FormField = ({ label, required, error, children }: FormFieldProps) 
     </div>
   );
 };
+
 
 

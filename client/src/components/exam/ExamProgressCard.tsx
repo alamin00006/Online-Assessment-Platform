@@ -1,3 +1,4 @@
+// Imports reusable UI.
 import { Card, CardContent } from "@/components/ui/card";
 
 interface ExamProgressCardProps {
@@ -23,5 +24,6 @@ export const ExamProgressCard = ({
     </CardContent>
   </Card>
 );
+
 
 

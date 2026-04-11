@@ -9,6 +9,7 @@ import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { useAuthStore } from "@/stores/auth-store";
 import { api } from "@/services/api";
 import { loginSchema, type LoginForm } from "@/schemas/auth.schema";
+// Imports reusable UI.
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -147,7 +148,7 @@ export const AuthLoginPage = ({ role }: AuthLoginPageProps) => {
                 <Button
                   type="submit"
                   disabled={mutation.isPending}
-                  className="mt-3 h-[46px] w-full rounded-[13px] bg-[linear-gradient(90deg,#5c2ef5_0%,#7438f7_100%)] text-[16px] font-semibold text-white shadow-none hover:opacity-95"
+                  className="mt-3 h-[46px] w-full rounded-[13px] bg-primary text-[16px] font-semibold text-primary-foreground shadow-none hover:bg-primary/90"
                 >
                   {mutation.isPending && (
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />

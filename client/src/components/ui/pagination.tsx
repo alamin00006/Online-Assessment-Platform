@@ -2,6 +2,7 @@ import * as React from "react";
 import { ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+// Imports reusable UI.
 import { ButtonProps, buttonVariants } from "@/components/ui/button";
 
 // Renders the Pagination component.

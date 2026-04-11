@@ -3,6 +3,7 @@
 // Displays attempt details and performance status in a table.
 
 import { Users } from "lucide-react";
+// Imports reusable UI.
 import { Badge } from "@/components/ui/badge";
 import {
   Table,
@@ -84,3 +85,4 @@ export const CandidateList = ({ attempts }: CandidateListProps) => {
     </div>
   );
 };
+

@@ -4,6 +4,7 @@ import { Command as CommandPrimitive } from "cmdk";
 import { Search } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+// Imports reusable UI.
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 
 // Renders the Command component with forwarded ref support.

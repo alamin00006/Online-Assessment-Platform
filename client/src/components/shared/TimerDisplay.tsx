@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 // Timer display component for candidate exam sessions.
 // Highlights remaining time and urgency during the assessment platform exam flow.
 
@@ -29,4 +29,5 @@ export const TimerDisplay = ({ formatted, timeRemaining }: TimerDisplayProps) =>
     </div>
   );
 };
+
 

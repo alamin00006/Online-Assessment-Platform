@@ -13,3 +13,4 @@ export const useTabSwitchDetection = (onSwitch: () => void) => {
     return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
   }, [handleVisibilityChange]);
 };
+

@@ -13,3 +13,4 @@ export const useFullscreenDetection = (onExit: () => void) => {
     return () => document.removeEventListener('fullscreenchange', handleChange);
   }, [handleChange]);
 };
+

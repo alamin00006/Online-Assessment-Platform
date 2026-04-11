@@ -5,6 +5,7 @@
 import Link from "next/link";
 import { ReactNode } from "react";
 import { ChevronDown, LogOut, Mail, Phone, UserCircle2 } from "lucide-react";
+// Imports reusable UI.
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -60,7 +61,7 @@ export const AppHeader = ({
                   aria-label="Open account menu"
                 >
                   <UserCircle2 className="h-8 w-8 shrink-0 text-[#d1d5db] sm:h-9 sm:w-9" />
-                  <div className="min-w-0 max-w-[92px] flex-1 sm:max-w-[132px]">
+                  <div className="min-w-0 max-w-[92px] flex-1 sm:max-w-[132px] hidden md:block ">
                     <p className="truncate text-[10px] font-semibold text-[#334155] sm:text-sm">
                       {userName}
                     </p>
@@ -156,4 +157,3 @@ export const AppShell = ({
     </div>
   );
 };
-

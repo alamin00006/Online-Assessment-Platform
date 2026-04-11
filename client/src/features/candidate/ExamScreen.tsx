@@ -116,7 +116,8 @@ const ExamScreen = () => {
 
   // Flattens question sets into the ordered question list used by the exam screen.
   const allQuestions: Question[] = useMemo(
-    () => exam?.questionSets.flatMap((questionSet) => questionSet.questions) || [],
+    () =>
+      exam?.questionSets.flatMap((questionSet) => questionSet.questions) || [],
     [exam],
   );
 
@@ -270,6 +271,3 @@ const ExamScreen = () => {
 };
 
 export default ExamScreen;
-
-
-

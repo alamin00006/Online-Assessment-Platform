@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 // Reusable status components for loading, error, and empty states.
 // These helpers are used across the assessment client pages.
 
@@ -73,4 +73,5 @@ export const EmptyState = ({
     </div>
   );
 };
+
 

@@ -84,7 +84,7 @@ question,
         <button
           type="button"
           onClick={() => onEdit(question)}
-          className="text-[11px] font-medium text-[#6d28d9] hover:underline"
+          className="text-[11px] font-medium text-primary hover:underline"
         >
           Edit
         </button>

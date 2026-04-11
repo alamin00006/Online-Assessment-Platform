@@ -8,7 +8,7 @@ interface CreateExamStepperProps {
 
 // Displays current progress through the exam creation steps.
 export const CreateExamStepper = ({
-step,
+  step,
   basicInfoSaved,
   onStepClick,
 }: CreateExamStepperProps) => {
@@ -17,21 +17,21 @@ step,
       <button
         type="button"
         onClick={() => onStepClick(1)}
-        className="flex items-center gap-2 text-[#6d28d9]"
+        className="flex items-center gap-2 text-primary"
       >
         <span className="flex h-4 w-4 items-center justify-center rounded-full bg-[#6d4aff] text-[10px] font-semibold text-white">
           {basicInfoSaved ? <Check className="h-2.5 w-2.5" /> : "1"}
         </span>
-        <span className="font-medium">Basic Info</span>
+        <span className="font-medium text-[14px]">Basic Info</span>
       </button>
 
-      <div className="h-px w-8 bg-[#dbe2ea]" />
+      <div className="h-px w-[80px] bg-black" />
 
       <button
         type="button"
         onClick={() => onStepClick(2)}
         className={`flex items-center gap-2 ${
-          step === 2 ? "text-[#6d28d9]" : "text-[#94a3b8]"
+          step === 2 ? "text-primary" : "text-[#94a3b8]"
         }`}
       >
         <span
@@ -43,10 +43,8 @@ step,
         >
           {step === 2 ? <Check className="h-2.5 w-2.5" /> : "2"}
         </span>
-        <span className="font-medium">Questions Sets</span>
+        <span className="font-medium text-[14px]">Questions</span>
       </button>
     </div>
   );
-}
-
-
+};

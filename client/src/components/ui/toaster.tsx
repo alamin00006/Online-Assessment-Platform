@@ -1,4 +1,5 @@
 import { useToast } from "@/hooks/use-toast";
+// Imports reusable UI.
 import { Toast, ToastClose, ToastDescription, ToastProvider, ToastTitle, ToastViewport } from "@/components/ui/toast";
 
 // Renders the Toaster component.

@@ -8,6 +8,7 @@ import { api } from "@/services/api";
 import { EmployerLayout } from "@/components/shared";
 import { CandidateList } from "@/components/shared";
 import { LoadingState, ErrorState } from "@/components/shared";
+// Imports reusable UI.
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 
@@ -65,6 +66,7 @@ const ViewCandidates = () => {
 };
 
 export default ViewCandidates;
+
 
 
 
