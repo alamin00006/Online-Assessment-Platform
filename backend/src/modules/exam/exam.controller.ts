@@ -8,17 +8,17 @@ import {
 } from "./exam.service";
 import { createExamSchema } from "./exam.validation";
 
-export async function getExams(req: Request, res: Response) {
+export const getExams = async (req: Request, res: Response) => {
   const exams = await findExamsByRole(req.auth?.userId, req.auth?.role);
   return res.json(apiResponse("Exams fetched successfully", exams));
-}
+};
 
-export async function getExamById(req: Request, res: Response) {
+export const getExamById = async (req: Request, res: Response) => {
   const exam = await findExamById(String(req.params.examId));
   return res.json(apiResponse("Exam fetched successfully", exam));
-}
+};
 
-export async function createExam(req: Request, res: Response) {
+export const createExam = async (req: Request, res: Response) => {
   const payload = createExamSchema.parse(req.body);
 
   if (!req.auth?.userId) {
@@ -27,4 +27,4 @@ export async function createExam(req: Request, res: Response) {
 
   const exam = await createExamForEmployer(payload, req.auth.userId);
   return res.status(201).json(apiResponse("Exam created successfully", exam));
-}
+};

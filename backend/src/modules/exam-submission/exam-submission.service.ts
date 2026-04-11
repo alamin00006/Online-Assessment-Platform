@@ -1,20 +1,24 @@
 import { ApiError } from "../../utils/api-error";
+import { Types } from "mongoose";
 import { UserModel } from "../auth/auth.model";
 import { ExamModel } from "../exam/exam.model";
 import { ExamSubmissionModel } from "./exam-submission.model";
 
 // Fetch submissions for a single candidate, newest first.
-export async function findSubmissionsByCandidate(candidateId: string) {
+export const findSubmissionsByCandidate = async (candidateId: string) => {
   return ExamSubmissionModel.find({ candidateId }).sort({ createdAt: -1 });
-}
+};
 
 // Fetch submissions for a specific exam.
-export async function findSubmissionsByExam(examId: string) {
+export const findSubmissionsByExam = async (examId: string) => {
   return ExamSubmissionModel.find({ examId }).sort({ createdAt: -1 });
-}
+};
 
 // Start a submission if the exam and candidate exist, or resume an existing one.
-export async function startExamSubmission(examId: string, candidateId: string) {
+export const startExamSubmission = async (
+  examId: string,
+  candidateId: string,
+) => {
   const exam = await ExamModel.findById(examId);
 
   if (!exam) {
@@ -45,8 +49,6 @@ export async function startExamSubmission(examId: string, candidateId: string) {
       $setOnInsert: {
         answers: {},
         violations: 0,
-        candidateName: candidate.name,
-        candidateEmail: candidate.email,
       },
     },
     {
@@ -54,18 +56,27 @@ export async function startExamSubmission(examId: string, candidateId: string) {
       upsert: true,
     },
   );
-}
+};
 
 // Submit a submission, calculate result status, and save answer data.
-export async function submitExamSubmission(
+export const submitExamSubmission = async (
   submissionId: string,
+  candidateId: string,
   answers: Record<string, string | string[]>,
   violations: number,
-) {
+) => {
+  if (!Types.ObjectId.isValid(submissionId)) {
+    throw new ApiError(400, "Invalid submission id");
+  }
+
   const submission = await ExamSubmissionModel.findById(submissionId);
 
   if (!submission) {
     throw new ApiError(404, "Submission not found");
+  }
+
+  if (submission.candidateId.toString() !== candidateId) {
+    throw new ApiError(403, "You cannot submit this exam attempt");
   }
 
   submission.answers = answers;
@@ -76,4 +87,4 @@ export async function submitExamSubmission(
 
   await submission.save();
   return submission;
-}
+};

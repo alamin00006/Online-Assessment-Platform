@@ -7,8 +7,8 @@ type AsyncController = (
 ) => Promise<unknown>;
 
 // Wrap async route handlers so thrown errors are forwarded to Express error middleware.
-export function asyncHandler(controller: AsyncController) {
+export const asyncHandler = (controller: AsyncController) => {
   return (req: Request, res: Response, next: NextFunction) => {
     controller(req, res, next).catch(next);
   };
-}
+};

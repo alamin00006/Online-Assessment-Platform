@@ -13,25 +13,28 @@ import {
 } from "./exam-submission.validation";
 
 // Return submissions for the authenticated candidate.
-export async function getCandidateSubmissions(req: Request, res: Response) {
+export const getCandidateSubmissions = async (
+  req: Request,
+  res: Response,
+) => {
   if (!req.auth?.userId) {
     throw new ApiError(401, "Authentication required");
   }
 
   const submissions = await findSubmissionsByCandidate(req.auth.userId);
   return res.json(apiResponse("Submissions fetched successfully", submissions));
-}
+};
 
 // Return all submissions for a specific exam.
-export async function getSubmissionsByExam(req: Request, res: Response) {
+export const getSubmissionsByExam = async (req: Request, res: Response) => {
   const submissions = await findSubmissionsByExam(String(req.params.examId));
   return res.json(
     apiResponse("Exam submissions fetched successfully", submissions),
   );
-}
+};
 
 // Start or resume a submission for the current candidate.
-export async function startSubmission(req: Request, res: Response) {
+export const startSubmission = async (req: Request, res: Response) => {
   const payload = startSubmissionSchema.parse(req.body);
 
   if (!req.auth?.userId) {
@@ -40,16 +43,22 @@ export async function startSubmission(req: Request, res: Response) {
 
   const submission = await startExamSubmission(payload.examId, req.auth.userId);
   return res.json(apiResponse("Exam submission started", submission));
-}
+};
 
 // Submit answers for a submission and update status.
-export async function submitSubmission(req: Request, res: Response) {
+export const submitSubmission = async (req: Request, res: Response) => {
   const payload = submitSubmissionSchema.parse(req.body);
+
+  if (!req.auth?.userId) {
+    throw new ApiError(401, "Authentication required");
+  }
+
   const submission = await submitExamSubmission(
     String(req.params.submissionId),
+    req.auth.userId,
     payload.answers,
     payload.violations,
   );
 
   return res.json(apiResponse("Exam submitted successfully", submission));
-}
+};

@@ -6,7 +6,7 @@ import { UserModel } from "./auth.model";
 import { loginSchema, registerSchema } from "./auth.validation";
 
 // Handle user registration and ensure duplicate accounts are prevented.
-export async function registerUser(input: typeof registerSchema._type) {
+export const registerUser = async (input: typeof registerSchema._type) => {
   const existingUser = await UserModel.findOne({ email: input.email });
 
   if (existingUser) {
@@ -19,10 +19,10 @@ export async function registerUser(input: typeof registerSchema._type) {
     ...input,
     password,
   });
-}
+};
 
 // Validate credentials and generate a signed JWT for authenticated users.
-export async function loginUser(input: typeof loginSchema._type) {
+export const loginUser = async (input: typeof loginSchema._type) => {
   const user = await UserModel.findOne({ email: input.email });
 
   if (!user) {
@@ -54,4 +54,4 @@ export async function loginUser(input: typeof loginSchema._type) {
       employeeId: user.employeeId,
     },
   };
-}
+};

@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
-import { Check, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { QuestionEditor } from "@/components/shared";
 // Imports reusable UI.
 import { Button } from "@/components/ui/button";
@@ -41,8 +41,20 @@ export const QuestionSetsStep = ({
   onSaveExam,
 }: QuestionSetsStepProps) => {
   const activeQuestionSet = editingQuestion
-    ? questionSets.find((questionSet) => questionSet.id === editingQuestion.setId)
+    ? questionSets.find(
+        (questionSet) => questionSet.id === editingQuestion.setId,
+      )
     : undefined;
+
+  // Opens the first question modal until questions exist, then submits the test.
+  const handlePrimaryAction = () => {
+    if (totalQuestions > 0) {
+      onSaveExam();
+      return;
+    }
+
+    setEditingQuestion({ setId: questionSets[0]?.id ?? "" });
+  };
 
   // Saves the active modal question and closes the modal when the flow is complete.
   const handleModalSave = (question: Question) => {
@@ -83,32 +95,15 @@ export const QuestionSetsStep = ({
 
       <Card className="rounded-[14px] border border-[#eef2f7] bg-white shadow-none">
         <CardContent className="space-y-3 p-4">
-          {totalQuestions > 0 && (
-            <div className="flex justify-end">
-              <Button
-                type="button"
-                variant="outline"
-                onClick={onSaveExam}
-                disabled={isSaving}
-                className="h-[36px] rounded-[8px] border-[#e2e8f0] px-4 text-[12px] font-medium text-[#475569] hover:bg-[#f8fafc]"
-              >
-                {isSaving ? (
-                  <Loader2 className="mr-2 h-3.5 w-3.5 animate-spin" />
-                ) : (
-                  <Check className="mr-2 h-3.5 w-3.5" />
-                )}
-                Save Online Test
-              </Button>
-            </div>
-          )}
-
           <Button
             type="button"
-            onClick={() =>
-              setEditingQuestion({ setId: questionSets[0]?.id ?? "" })
-            }
+            onClick={handlePrimaryAction}
+            disabled={isSaving}
             className="h-[38px] w-full rounded-[8px] bg-primary text-[12px] font-semibold text-primary-foreground shadow-none hover:bg-primary/90"
           >
+            {isSaving ? (
+              <Loader2 className="mr-2 h-3.5 w-3.5 animate-spin" />
+            ) : null}
             Add Question
           </Button>
         </CardContent>

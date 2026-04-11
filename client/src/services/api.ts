@@ -12,7 +12,7 @@ import { useAuthStore } from "@/stores/auth-store";
 
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, "") ||
-  "http://localhost:8000/api";
+  "https://online-assessment-backend-2hei.onrender.com/api";
 
 interface ApiEnvelope<T> {
   success: boolean;
@@ -331,4 +331,3 @@ export const api = {
     return mapAttempt(attempt);
   },
 };
-

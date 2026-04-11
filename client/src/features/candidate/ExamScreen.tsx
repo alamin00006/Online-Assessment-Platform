@@ -1,10 +1,10 @@
 ﻿"use client";
 
 // Owns the candidate exam lifecycle: session start, timer, violations, and submit state.
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { AlertTriangle, Check, CheckCircle2 } from "lucide-react";
+import { Check } from "lucide-react";
 import { toast } from "sonner";
 import {
   ExamProgressCard,
@@ -32,6 +32,7 @@ const ExamScreen = () => {
   const { user, logout } = useAuthStore();
   const {
     currentAttemptId,
+    currentExamId,
     answers,
     violations,
     isSubmitted,
@@ -46,6 +47,7 @@ const ExamScreen = () => {
   const [showSuccess, setShowSuccess] = useState(false);
   const [showTimeout, setShowTimeout] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const startRequestExamIdRef = useRef<string | null>(null);
 
   // Loads the exam definition required to render and start the attempt.
   const { data: exam, isLoading } = useQuery({
@@ -56,7 +58,12 @@ const ExamScreen = () => {
 
   // Starts the candidate attempt once exam and user data are available.
   const startMutation = useMutation({
-    mutationFn: () => api.startExam(examId!, user!.id, user!.name, user!.email),
+    mutationFn: () =>
+      api.startExam(examId!, user!.id, user!.name || "", user!.email || ""),
+    onError: (error: any) => {
+      console.error("Start exam failed:", error);
+      toast.error(error.message || "Failed to start exam");
+    },
     onSuccess: (attempt) => {
       if (!exam) return;
       startSession(attempt.id, examId!, exam.duration);
@@ -65,17 +72,42 @@ const ExamScreen = () => {
 
   // Automatically starts an exam session when the screen has the required data.
   useEffect(() => {
-    if (exam && user && !currentAttemptId && !isSubmitted) {
+    const shouldStartSession =
+      exam && user && examId && (!currentAttemptId || currentExamId !== examId);
+
+    if (
+      shouldStartSession &&
+      !startMutation.isPending &&
+      startRequestExamIdRef.current !== examId
+    ) {
+      startRequestExamIdRef.current = examId;
       startMutation.mutate();
     }
-  }, [exam, user, currentAttemptId, isSubmitted, startMutation]);
+  }, [
+    exam,
+    user,
+    examId,
+    currentAttemptId,
+    currentExamId,
+    startMutation,
+  ]);
 
   // Submits the active attempt and finalizes the local session state.
   const submitMutation = useMutation({
-    mutationFn: () => api.submitExam(currentAttemptId!, answers, violations),
+    mutationFn: () => {
+      if (!currentAttemptId || currentExamId !== examId) {
+        throw new Error("Exam session is not ready for submission");
+      }
+
+      return api.submitExam(currentAttemptId, answers, violations);
+    },
     onSuccess: () => {
       submitSession();
       setShowSuccess(true);
+    },
+    onError: (error: any) => {
+      console.error("Submit exam failed:", error);
+      toast.error(error.message || "Failed to submit exam");
     },
   });
 
@@ -208,11 +240,14 @@ const ExamScreen = () => {
         title="Test Completed"
         description={`Congratulations! ${user?.name}, you have completed your ${exam?.title || "exam"}. Thank you for participating.`}
         icon={
-          <div className="relative mx-auto h-12 w-12">
-            <CheckCircle2 className="h-12 w-12 text-[#3b82f6]" />
-            <span className="absolute -bottom-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-[#22c55e] text-white">
-              <Check className="h-3 w-3" />
-            </span>
+          <div
+            className="mx-auto flex h-12 w-12 items-center justify-center bg-[#3ba7ff] text-white shadow-sm"
+            style={{
+              clipPath:
+                "polygon(50% 0%, 58% 10%, 70% 5%, 76% 17%, 89% 17%, 91% 31%, 100% 39%, 94% 50%, 100% 61%, 91% 69%, 89% 83%, 76% 83%, 70% 95%, 58% 90%, 50% 100%, 42% 90%, 30% 95%, 24% 83%, 11% 83%, 9% 69%, 0% 61%, 6% 50%, 0% 39%, 9% 31%, 11% 17%, 24% 17%, 30% 5%, 42% 10%)",
+            }}
+          >
+            <Check className="h-7 w-7 stroke-[4]" />
           </div>
         }
         userName={user?.name}
@@ -237,15 +272,6 @@ const ExamScreen = () => {
       <div className="mx-auto max-w-[820px] space-y-4 py-2 sm:space-y-5 sm:py-4">
         {warningMessage && (
           <WarningBanner message={warningMessage} variant="danger" />
-        )}
-
-        {violations > 0 && (
-          <div className="flex justify-end">
-            <span className="inline-flex items-center gap-1 rounded-full bg-[#fef2f2] px-3 py-1 text-xs font-medium text-[#ef4444]">
-              <AlertTriangle className="h-3.5 w-3.5" />
-              Violations: {violations}
-            </span>
-          </div>
         )}
 
         <ExamProgressCard

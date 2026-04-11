@@ -6,7 +6,7 @@ import { UserModel } from "../modules/auth/auth.model";
 import { ExamModel } from "../modules/exam/exam.model";
 
 // Seed script to populate the database with sample users, exams, and attempts.
-async function seed() {
+const seed = async () => {
   await connectDatabase();
 
   await Promise.all([
@@ -275,7 +275,7 @@ async function seed() {
   console.log("Candidate login: candidate@test.com / password123");
 
   await mongoose.disconnect();
-}
+};
 
 void seed().catch(async (error) => {
   console.error("Seed failed");

@@ -3,12 +3,12 @@ import { ZodError } from "zod";
 import { ApiError } from "../utils/api-error";
 
 // Centralized error handler for validation, API errors, and unexpected failures.
-export function errorHandler(
+export const errorHandler = (
   error: unknown,
   _req: Request,
   res: Response,
   _next: NextFunction,
-) {
+) => {
   if (error instanceof ZodError) {
     return res.status(400).json({
       success: false,
@@ -31,4 +31,4 @@ export function errorHandler(
     success: false,
     message,
   });
-}
+};

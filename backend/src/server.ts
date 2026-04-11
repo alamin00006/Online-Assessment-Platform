@@ -3,7 +3,7 @@ import { connectDatabase } from "./config/db";
 import { env } from "./config/env";
 
 // Bootstrap the backend server after successfully connecting to MongoDB.
-async function bootstrap() {
+const bootstrap = async () => {
   try {
     await connectDatabase();
     app.listen(env.PORT, () => {
@@ -13,6 +13,6 @@ async function bootstrap() {
     console.error("Failed to start backend", error);
     process.exit(1);
   }
-}
+};
 
 void bootstrap();

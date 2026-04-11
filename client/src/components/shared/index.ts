@@ -9,6 +9,7 @@ export * from "./ProtectedRoute";
 export * from "./QuestionEditor";
 export * from "./QuestionModal";
 export * from "./RichTextEditor";
+export * from "./RichTextDisplay";
 export * from "./StateDisplays";
 export * from "./TimerDisplay";
 export * from "./WarningBanner";

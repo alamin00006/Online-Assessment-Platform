@@ -1,7 +1,7 @@
 // Imports reusable UI.
 import { Checkbox } from "@/components/ui/checkbox";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { RichTextEditor } from "@/components/shared";
+import { RichTextDisplay, RichTextEditor } from "@/components/shared";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Question } from "@/types";
@@ -28,12 +28,14 @@ export const ExamQuestionCard = ({
 }: ExamQuestionCardProps) => (
   <Card className="rounded-[14px] border border-[#e5ebf3] bg-white shadow-none">
     <CardContent className="space-y-5 p-3 sm:space-y-6 sm:p-5">
-      <h2
-        className="font-display text-[17px] font-semibold leading-[1.45] text-[#334155] sm:text-[22px]"
-        dangerouslySetInnerHTML={{
-          __html: `Q${questionNumber + 1}. ${question.title}`,
-        }}
-      />
+      <h2 className="font-display text-[17px] font-semibold leading-[1.45] text-[#334155] sm:text-[22px]">
+        <span>Q{questionNumber + 1}. </span>
+        <RichTextDisplay
+          html={question.title}
+          inlineParagraphs
+          className="align-baseline"
+        />
+      </h2>
 
       {question.type === "radio" && question.options && (
         <RadioGroup
@@ -41,32 +43,41 @@ export const ExamQuestionCard = ({
           onValueChange={(value) => onAnswerChange(question.id, value)}
           className="space-y-3"
         >
-          {question.options.map((option) => (
-            <label
-              key={option}
-              htmlFor={`${question.id}-${option}`}
-              className="flex cursor-pointer items-center gap-3 rounded-[8px] border border-[#e8edf4] px-3 py-3 text-[12px] text-[#475569] transition-colors hover:bg-[#fafbfc] sm:px-4 sm:text-sm"
-            >
-              <RadioGroupItem value={option} id={`${question.id}-${option}`} />
-              <span>{option}</span>
-            </label>
-          ))}
+          {question.options.map((option, optionIndex) => {
+            const optionId = `${question.id}-option-${optionIndex}`;
+
+            return (
+              <label
+                key={optionId}
+                htmlFor={optionId}
+                className="flex cursor-pointer items-start gap-3 rounded-[8px] border border-[#e8edf4] px-3 py-3 text-[12px] text-[#475569] transition-colors hover:bg-[#fafbfc] sm:px-4 sm:text-sm"
+              >
+                <RadioGroupItem
+                  value={option}
+                  id={optionId}
+                  className="mt-0.5"
+                />
+                <RichTextDisplay html={option} className="flex-1 leading-5" />
+              </label>
+            );
+          })}
         </RadioGroup>
       )}
 
       {question.type === "checkbox" && question.options && (
         <div className="space-y-3">
-          {question.options.map((option) => {
+          {question.options.map((option, optionIndex) => {
             const selected = (answers[question.id] as string[]) || [];
+            const optionId = `${question.id}-option-${optionIndex}`;
 
             return (
               <label
-                key={option}
-                htmlFor={`${question.id}-${option}`}
-                className="flex cursor-pointer items-center gap-3 rounded-[8px] border border-[#e8edf4] px-3 py-3 text-[12px] text-[#475569] transition-colors hover:bg-[#fafbfc] sm:px-4 sm:text-sm"
+                key={optionId}
+                htmlFor={optionId}
+                className="flex cursor-pointer items-start gap-3 rounded-[8px] border border-[#e8edf4] px-3 py-3 text-[12px] text-[#475569] transition-colors hover:bg-[#fafbfc] sm:px-4 sm:text-sm"
               >
                 <Checkbox
-                  id={`${question.id}-${option}`}
+                  id={optionId}
                   checked={selected.includes(option)}
                   onCheckedChange={(checked) => {
                     const next = checked
@@ -74,9 +85,9 @@ export const ExamQuestionCard = ({
                       : selected.filter((item) => item !== option);
                     onAnswerChange(question.id, next);
                   }}
-                  className="h-[14px] w-[14px] rounded-[3px] border-[#cbd5e1] data-[state=checked]:border-primary data-[state=checked]:bg-primary"
+                  className="mt-0.5 h-[14px] w-[14px] rounded-[3px] border-[#cbd5e1] data-[state=checked]:border-primary data-[state=checked]:bg-primary"
                 />
-                <span>{option}</span>
+                <RichTextDisplay html={option} className="flex-1 leading-5" />
               </label>
             );
           })}
@@ -113,7 +124,3 @@ export const ExamQuestionCard = ({
     </CardContent>
   </Card>
 );
-
-
-
-

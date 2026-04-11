@@ -4,7 +4,7 @@ import { loginUser, registerUser } from "./auth.service";
 import { loginSchema, registerSchema } from "./auth.validation";
 
 // Handle registration requests and return normalized user data.
-export async function register(req: Request, res: Response) {
+export const register = async (req: Request, res: Response) => {
   const payload = registerSchema.parse(req.body);
   const user = await registerUser(payload);
 
@@ -17,12 +17,12 @@ export async function register(req: Request, res: Response) {
       employeeId: user.employeeId,
     }),
   );
-}
+};
 
 // Authenticate users and return a JWT with user details.
-export async function login(req: Request, res: Response) {
+export const login = async (req: Request, res: Response) => {
   const payload = loginSchema.parse(req.body);
   const data = await loginUser(payload);
 
   return res.json(apiResponse("Login successful", data));
-}
+};

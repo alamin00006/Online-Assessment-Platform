@@ -1,4 +1,5 @@
 import { CheckCircle2 } from "lucide-react";
+import { RichTextDisplay } from "@/components/shared";
 import { Question } from "@/types";
 
 interface QuestionDisplayProps {
@@ -44,9 +45,9 @@ question,
         </div>
       </div>
 
-      <div
-        className="text-[13px] font-semibold text-[#1e293b]"
-        dangerouslySetInnerHTML={{ __html: question.title }}
+      <RichTextDisplay
+        html={question.title}
+        className="block text-[13px] font-semibold text-[#1e293b]"
       />
 
       {question.type !== "text" && question.options && (
@@ -57,16 +58,19 @@ question,
             return (
               <div
                 key={optionIndex}
-                className={`flex items-center gap-3 rounded-[6px] px-4 py-2.5 text-[12px] ${
+                className={`flex items-start gap-3 rounded-[6px] px-4 py-2.5 text-[12px] ${
                   isCorrect ? "bg-[#f3f4f6]" : "bg-white"
                 }`}
               >
-                <span className="font-medium text-[#64748b]">
+                <span className="mt-0.5 font-medium text-[#64748b]">
                   {String.fromCharCode(65 + optionIndex)}.
                 </span>
-                <span className="flex-1 text-[#334155]">{option}</span>
+                <RichTextDisplay
+                  html={option}
+                  className="flex-1 text-[#334155]"
+                />
                 {isCorrect ? (
-                  <CheckCircle2 className="h-4 w-4 flex-shrink-0 text-[#22c55e]" />
+                  <CheckCircle2 className="mt-0.5 h-4 w-4 flex-shrink-0 text-[#22c55e]" />
                 ) : null}
               </div>
             );
@@ -99,5 +103,3 @@ question,
     </div>
   );
 }
-
-

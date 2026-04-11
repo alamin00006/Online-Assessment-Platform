@@ -28,7 +28,7 @@ const EmployerDashboard = () => {
     data: exams,
     isLoading,
     isError,
-  // Loads server data required by this screen or component.
+    // Loads server data required by this screen or component.
   } = useQuery({
     queryKey: ["employer-exams", user?.id],
     queryFn: () => api.getExams(user?.id, "employer"),
@@ -71,7 +71,7 @@ const EmployerDashboard = () => {
         {isLoading && <LoadingState message="Loading exams..." />}
         {isError && <ErrorState message="Failed to load exams." />}
 
-        {exams && filtered.length === 0 && (
+        {!isLoading && !isError && filtered.length === 0 && (
           <div className="rounded-[10px] border border-[#edf1f7] bg-white px-6 py-8">
             <EmptyState
               message="No Online Test Available"
@@ -109,7 +109,3 @@ const EmployerDashboard = () => {
 };
 
 export default EmployerDashboard;
-
-
-
-
