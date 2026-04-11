@@ -4,6 +4,7 @@ import { Dot } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
+// Renders the Input OTP component with forwarded ref support.
 const InputOTP = React.forwardRef<React.ElementRef<typeof OTPInput>, React.ComponentPropsWithoutRef<typeof OTPInput>>(
   ({ className, containerClassName, ...props }, ref) => (
     <OTPInput
@@ -16,11 +17,13 @@ const InputOTP = React.forwardRef<React.ElementRef<typeof OTPInput>, React.Compo
 );
 InputOTP.displayName = "InputOTP";
 
+// Renders the Input OTPGroup component with forwarded ref support.
 const InputOTPGroup = React.forwardRef<React.ElementRef<"div">, React.ComponentPropsWithoutRef<"div">>(
   ({ className, ...props }, ref) => <div ref={ref} className={cn("flex items-center", className)} {...props} />,
 );
 InputOTPGroup.displayName = "InputOTPGroup";
 
+// Renders the Input OTPSlot component with forwarded ref support.
 const InputOTPSlot = React.forwardRef<
   React.ElementRef<"div">,
   React.ComponentPropsWithoutRef<"div"> & { index: number }
@@ -49,6 +52,7 @@ const InputOTPSlot = React.forwardRef<
 });
 InputOTPSlot.displayName = "InputOTPSlot";
 
+// Renders the Input OTPSeparator component with forwarded ref support.
 const InputOTPSeparator = React.forwardRef<React.ElementRef<"div">, React.ComponentPropsWithoutRef<"div">>(
   ({ ...props }, ref) => (
     <div ref={ref} role="separator" {...props}>
@@ -59,3 +63,5 @@ const InputOTPSeparator = React.forwardRef<React.ElementRef<"div">, React.Compon
 InputOTPSeparator.displayName = "InputOTPSeparator";
 
 export { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator };
+
+

@@ -1,12 +1,18 @@
-"use client";
+﻿"use client";
 
-import { ProtectedRoute } from "@/components/ProtectedRoute";
-import EmployerDashboard from "@/components/pages/EmployerDashboard";
+import { ProtectedRoute } from "@/components/shared";
+import EmployerDashboard from "@/features/employer/EmployerDashboard";
 
-export default function EmployerPage() {
+// Protects and renders the employer dashboard route.
+const EmployerPage = () => {
   return (
     <ProtectedRoute requiredRole="employer">
       <EmployerDashboard />
     </ProtectedRoute>
   );
-}
+};
+
+export default EmployerPage;
+
+
+

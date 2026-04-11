@@ -1,12 +1,18 @@
-"use client";
+﻿"use client";
 // Wrapper page for employer candidate list per exam.
-import { ProtectedRoute } from "@/components/ProtectedRoute";
-import ViewCandidates from "@/components/pages/ViewCandidates";
+import { ProtectedRoute } from "@/components/shared";
+import ViewCandidates from "@/features/employer/ViewCandidates";
 
-export default function ViewCandidatesPage() {
+// Protects and renders the employer candidate review route.
+const ViewCandidatesPage = () => {
   return (
     <ProtectedRoute requiredRole="employer">
       <ViewCandidates />
     </ProtectedRoute>
   );
-}
+};
+
+export default ViewCandidatesPage;
+
+
+

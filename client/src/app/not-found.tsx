@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 
-export default function NotFound() {
+// Renders the fallback screen for unknown application routes.
+const NotFound = () => {
   return (
     <div className="flex min-h-screen items-center justify-center bg-muted">
       <div className="text-center">
@@ -14,4 +15,6 @@ export default function NotFound() {
       </div>
     </div>
   );
-}
+};
+
+export default NotFound;

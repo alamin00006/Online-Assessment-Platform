@@ -79,9 +79,10 @@ interface BackendAttempt {
   submittedAt?: string;
 }
 
-function getToken() {
+// Reads the current auth token for authenticated API requests.
+const getToken = () => {
   return useAuthStore.getState().token;
-}
+};
 
 const apiClient = axios.create({
   baseURL: API_BASE_URL,
@@ -100,13 +101,14 @@ apiClient.interceptors.request.use((config) => {
   return config;
 });
 
-// General HTTP helper for the frontend API layer.
+// General HTTP helper for the client API layer.
 // Ensures errors from the backend are surfaced as meaningful messages.
-async function request<T>(
+// Executes API requests and normalizes backend error messages.
+const request = async <T>(
   method: "get" | "post",
   path: string,
   data?: unknown,
-): Promise<T> {
+): Promise<T> => {
   try {
     const response = await apiClient.request<ApiEnvelope<T>>({
       url: path,
@@ -124,9 +126,10 @@ async function request<T>(
 
     throw error;
   }
-}
+};
 
-function mapQuestion(question: BackendQuestion): Question {
+// Converts a backend question payload into the client question model.
+const mapQuestion = (question: BackendQuestion): Question => {
   return {
     id: question._id || `question-${Math.random().toString(36).slice(2, 9)}`,
     title: question.title,
@@ -135,9 +138,10 @@ function mapQuestion(question: BackendQuestion): Question {
     correctAnswer: question.correctAnswer,
     points: question.points,
   };
-}
+};
 
-function mapQuestionSet(questionSet: BackendQuestionSet): QuestionSet {
+// Converts a backend question set payload into the client question set model.
+const mapQuestionSet = (questionSet: BackendQuestionSet): QuestionSet => {
   return {
     id:
       questionSet._id ||
@@ -145,18 +149,20 @@ function mapQuestionSet(questionSet: BackendQuestionSet): QuestionSet {
     name: questionSet.name,
     questions: questionSet.questions.map(mapQuestion),
   };
-}
+};
 
-function mapSlot(slot: BackendExamSlot): ExamSlot {
+// Converts a backend exam slot payload into the client slot model.
+const mapSlot = (slot: BackendExamSlot): ExamSlot => {
   return {
     id: slot._id || `slot-${Math.random().toString(36).slice(2, 9)}`,
     startTime: slot.startTime,
     endTime: slot.endTime,
   };
-}
+};
 
-// Map backend exam payloads into frontend exam models.
-function mapExam(exam: BackendExam): Exam {
+// Map backend exam payloads into client exam models.
+// Converts a backend exam payload into the client exam model.
+const mapExam = (exam: BackendExam): Exam => {
   return {
     id: exam._id || "",
     title: exam.title,
@@ -171,9 +177,10 @@ function mapExam(exam: BackendExam): Exam {
     endTime: exam.endTime,
     status: exam.status,
   };
-}
+};
 
-function mapAttempt(attempt: BackendAttempt): CandidateExamAttempt {
+// Converts a backend attempt payload into the client attempt model.
+const mapAttempt = (attempt: BackendAttempt): CandidateExamAttempt => {
   return {
     id: attempt._id || "",
     examId: attempt.examId,
@@ -188,14 +195,15 @@ function mapAttempt(attempt: BackendAttempt): CandidateExamAttempt {
     startedAt: attempt.startedAt,
     submittedAt: attempt.submittedAt,
   };
-}
+};
 
-function toCreateExamBody(payload: CreateExamPayload) {
+// Converts client exam form state into the backend create-exam payload.
+const toCreateExamBody = (payload: CreateExamPayload) => {
   return {
     ...payload,
-    questionSets: payload.questionSets.map((set) => ({
-      name: set.name,
-      questions: set.questions.map((question) => ({
+    questionSets: payload.questionSets.map((questionSet) => ({
+      name: questionSet.name,
+      questions: questionSet.questions.map((question) => ({
         title: question.title,
         type: question.type,
         options: question.options?.filter(Boolean),
@@ -204,9 +212,10 @@ function toCreateExamBody(payload: CreateExamPayload) {
       })),
     })),
   };
-}
+};
 
 export const api = {
+  // Authenticates a user and maps the backend response into client auth state.
   async login(
     email: string,
     password: string,
@@ -229,6 +238,7 @@ export const api = {
     };
   },
 
+  // Loads exams and filters them according to the active user role.
   async getExams(userId?: string, role?: string): Promise<Exam[]> {
     const exams = await request<BackendExam[]>("get", "/exams");
     const mapped = exams.map(mapExam);
@@ -240,11 +250,13 @@ export const api = {
     return mapped.filter((exam) => exam.status === "active");
   },
 
+  // Loads one exam and maps it into the client exam model.
   async getExam(examId: string): Promise<Exam> {
     const exam = await request<BackendExam>("get", `/exams/${examId}`);
     return mapExam(exam);
   },
 
+  // Creates an exam through the backend API and returns the mapped exam.
   async createExam(payload: CreateExamPayload, _userId: string): Promise<Exam> {
     const exam = await request<BackendExam>(
       "post",
@@ -255,6 +267,7 @@ export const api = {
     return mapExam(exam);
   },
 
+  // Loads candidate attempts for a specific employer exam.
   async getCandidatesForExam(examId: string): Promise<CandidateExamAttempt[]> {
     const attempts = await request<BackendAttempt[]>(
       "get",
@@ -263,6 +276,7 @@ export const api = {
     return attempts.map(mapAttempt);
   },
 
+  // Loads active exams and joins them with the candidate attempt state.
   async getExamsForCandidate(
     candidateId: string,
   ): Promise<{ exam: Exam; attempt?: CandidateExamAttempt }[]> {
@@ -284,6 +298,7 @@ export const api = {
       }));
   },
 
+  // Starts a candidate exam attempt through the backend API.
   async startExam(
     examId: string,
     _candidateId: string,
@@ -301,6 +316,7 @@ export const api = {
     return mapAttempt(attempt);
   },
 
+  // Submits candidate answers and violation count for final scoring.
   async submitExam(
     attemptId: string,
     answers: Record<string, string | string[]>,

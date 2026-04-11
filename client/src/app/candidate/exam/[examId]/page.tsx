@@ -1,12 +1,18 @@
-"use client";
-// Wrapper page for candidate exam taking flow in the interview task frontend.
-import { ProtectedRoute } from "@/components/ProtectedRoute";
-import ExamScreen from "@/components/pages/ExamScreen";
+﻿"use client";
+// Wrapper page for candidate exam taking flow in the assessment client.
+import { ProtectedRoute } from "@/components/shared";
+import ExamScreen from "@/features/candidate/ExamScreen";
 
-export default function ExamPage() {
+// Protects and renders the candidate exam-taking route.
+const ExamPage = () => {
   return (
     <ProtectedRoute requiredRole="candidate">
       <ExamScreen />
     </ProtectedRoute>
   );
-}
+};
+
+export default ExamPage;
+
+
+

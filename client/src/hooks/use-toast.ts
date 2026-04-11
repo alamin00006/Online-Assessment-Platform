@@ -21,10 +21,11 @@ const actionTypes = {
 
 let count = 0;
 
-function genId() {
+// Generates stable incremental ids for toast records.
+const genId = () => {
   count = (count + 1) % Number.MAX_SAFE_INTEGER;
   return count.toString();
-}
+};
 
 type ActionType = typeof actionTypes;
 
@@ -52,6 +53,7 @@ interface State {
 
 const toastTimeouts = new Map<string, ReturnType<typeof setTimeout>>();
 
+// Schedules dismissed toasts for removal while avoiding duplicate timers.
 const addToRemoveQueue = (toastId: string) => {
   if (toastTimeouts.has(toastId)) {
     return;
@@ -79,7 +81,11 @@ export const reducer = (state: State, action: Action): State => {
     case "UPDATE_TOAST":
       return {
         ...state,
-        toasts: state.toasts.map((t) => (t.id === action.toast.id ? { ...t, ...action.toast } : t)),
+        toasts: state.toasts.map((toastItem) =>
+          toastItem.id === action.toast.id
+            ? { ...toastItem, ...action.toast }
+            : toastItem,
+        ),
       };
 
     case "DISMISS_TOAST": {
@@ -97,13 +103,13 @@ export const reducer = (state: State, action: Action): State => {
 
       return {
         ...state,
-        toasts: state.toasts.map((t) =>
-          t.id === toastId || toastId === undefined
+        toasts: state.toasts.map((toastItem) =>
+          toastItem.id === toastId || toastId === undefined
             ? {
-                ...t,
+                ...toastItem,
                 open: false,
               }
-            : t,
+            : toastItem,
         ),
       };
     }
@@ -116,7 +122,9 @@ export const reducer = (state: State, action: Action): State => {
       }
       return {
         ...state,
-        toasts: state.toasts.filter((t) => t.id !== action.toastId),
+        toasts: state.toasts.filter(
+          (toastItem) => toastItem.id !== action.toastId,
+        ),
       };
   }
 };
@@ -125,22 +133,25 @@ const listeners: Array<(state: State) => void> = [];
 
 let memoryState: State = { toasts: [] };
 
-function dispatch(action: Action) {
+// Applies toast reducer actions and notifies active subscribers.
+const dispatch = (action: Action) => {
   memoryState = reducer(memoryState, action);
   listeners.forEach((listener) => {
     listener(memoryState);
   });
-}
+};
 
 type Toast = Omit<ToasterToast, "id">;
 
-function toast({ ...props }: Toast) {
+// Creates a toast record and exposes update and dismiss helpers.
+const toast = ({ ...props }: Toast) => {
   const id = genId();
 
-  const update = (props: ToasterToast) =>
+  // Defines update behavior for this module.
+  const update = (toastProps: ToasterToast) =>
     dispatch({
       type: "UPDATE_TOAST",
-      toast: { ...props, id },
+      toast: { ...toastProps, id },
     });
   const dismiss = () => dispatch({ type: "DISMISS_TOAST", toastId: id });
 
@@ -161,11 +172,13 @@ function toast({ ...props }: Toast) {
     dismiss,
     update,
   };
-}
+};
 
-function useToast() {
+// Subscribes components to toast state and exposes toast actions.
+const useToast = () => {
   const [state, setState] = React.useState<State>(memoryState);
 
+  // Registers and removes toast listeners for the mounted component.
   React.useEffect(() => {
     listeners.push(setState);
     return () => {
@@ -181,6 +194,6 @@ function useToast() {
     toast,
     dismiss: (toastId?: string) => dispatch({ type: "DISMISS_TOAST", toastId }),
   };
-}
+};
 
 export { useToast, toast };

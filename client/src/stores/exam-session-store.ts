@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-// Exam session store keeps the candidate's current attempt state during the interview task.
+// Exam session store keeps the candidate's current attempt state during the assessment platform.
 // It persists answers, timer, violations, and current exam context.
 interface ExamSessionState {
   currentAttemptId: string | null;

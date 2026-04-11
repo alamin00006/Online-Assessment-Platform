@@ -19,7 +19,8 @@ type ChartContextProps = {
 
 const ChartContext = React.createContext<ChartContextProps | null>(null);
 
-function useChart() {
+// Provides use Chart behavior for reusable component logic.
+const useChart = () => {
   const context = React.useContext(ChartContext);
 
   if (!context) {
@@ -27,8 +28,9 @@ function useChart() {
   }
 
   return context;
-}
+};
 
+// Renders the Chart Container component with forwarded ref support.
 const ChartContainer = React.forwardRef<
   HTMLDivElement,
   React.ComponentProps<"div"> & {
@@ -58,6 +60,7 @@ const ChartContainer = React.forwardRef<
 });
 ChartContainer.displayName = "Chart";
 
+// Renders the Chart Style component.
 const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }) => {
   const colorConfig = Object.entries(config).filter(([_, config]) => config.theme || config.color);
 
@@ -89,6 +92,7 @@ ${colorConfig
 
 const ChartTooltip = RechartsPrimitive.Tooltip;
 
+// Renders the Chart Tooltip Content component with forwarded ref support.
 const ChartTooltipContent = React.forwardRef<
   HTMLDivElement,
   React.ComponentProps<typeof RechartsPrimitive.Tooltip> &
@@ -120,6 +124,7 @@ const ChartTooltipContent = React.forwardRef<
   ) => {
     const { config } = useChart();
 
+    // Memoizes derived data to avoid unnecessary recalculation during renders.
     const tooltipLabel = React.useMemo(() => {
       if (hideLabel || !payload?.length) {
         return null;
@@ -160,21 +165,27 @@ const ChartTooltipContent = React.forwardRef<
       >
         {!nestLabel ? tooltipLabel : null}
         <div className="grid gap-1.5">
-          {payload.map((item, index) => {
-            const key = `${nameKey || item.name || item.dataKey || "value"}`;
-            const itemConfig = getPayloadConfigFromPayload(config, item, key);
-            const indicatorColor = color || item.payload.fill || item.color;
+          {payload.map((payloadItem, payloadIndex) => {
+            const key = `${nameKey || payloadItem.name || payloadItem.dataKey || "value"}`;
+            const itemConfig = getPayloadConfigFromPayload(config, payloadItem, key);
+            const indicatorColor = color || payloadItem.payload.fill || payloadItem.color;
 
             return (
               <div
-                key={item.dataKey}
+                key={payloadItem.dataKey}
                 className={cn(
                   "flex w-full flex-wrap items-stretch gap-2 [&>svg]:h-2.5 [&>svg]:w-2.5 [&>svg]:text-muted-foreground",
                   indicator === "dot" && "items-center",
                 )}
               >
-                {formatter && item?.value !== undefined && item.name ? (
-                  formatter(item.value, item.name, item, index, item.payload)
+                {formatter && payloadItem?.value !== undefined && payloadItem.name ? (
+                  formatter(
+                    payloadItem.value,
+                    payloadItem.name,
+                    payloadItem,
+                    payloadIndex,
+                    payloadItem.payload,
+                  )
                 ) : (
                   <>
                     {itemConfig?.icon ? (
@@ -205,11 +216,11 @@ const ChartTooltipContent = React.forwardRef<
                     >
                       <div className="grid gap-1.5">
                         {nestLabel ? tooltipLabel : null}
-                        <span className="text-muted-foreground">{itemConfig?.label || item.name}</span>
+                        <span className="text-muted-foreground">{itemConfig?.label || payloadItem.name}</span>
                       </div>
-                      {item.value && (
+                      {payloadItem.value && (
                         <span className="font-mono font-medium tabular-nums text-foreground">
-                          {item.value.toLocaleString()}
+                          {payloadItem.value.toLocaleString()}
                         </span>
                       )}
                     </div>
@@ -227,6 +238,7 @@ ChartTooltipContent.displayName = "ChartTooltip";
 
 const ChartLegend = RechartsPrimitive.Legend;
 
+// Renders the Chart Legend Content component with forwarded ref support.
 const ChartLegendContent = React.forwardRef<
   HTMLDivElement,
   React.ComponentProps<"div"> &
@@ -246,13 +258,13 @@ const ChartLegendContent = React.forwardRef<
       ref={ref}
       className={cn("flex items-center justify-center gap-4", verticalAlign === "top" ? "pb-3" : "pt-3", className)}
     >
-      {payload.map((item) => {
-        const key = `${nameKey || item.dataKey || "value"}`;
-        const itemConfig = getPayloadConfigFromPayload(config, item, key);
+      {payload.map((payloadItem) => {
+        const key = `${nameKey || payloadItem.dataKey || "value"}`;
+        const itemConfig = getPayloadConfigFromPayload(config, payloadItem, key);
 
         return (
           <div
-            key={item.value}
+            key={payloadItem.value}
             className={cn("flex items-center gap-1.5 [&>svg]:h-3 [&>svg]:w-3 [&>svg]:text-muted-foreground")}
           >
             {itemConfig?.icon && !hideIcon ? (
@@ -261,7 +273,7 @@ const ChartLegendContent = React.forwardRef<
               <div
                 className="h-2 w-2 shrink-0 rounded-[2px]"
                 style={{
-                  backgroundColor: item.color,
+                  backgroundColor: payloadItem.color,
                 }}
               />
             )}
@@ -275,7 +287,7 @@ const ChartLegendContent = React.forwardRef<
 ChartLegendContent.displayName = "ChartLegend";
 
 // Helper to extract item config from a payload.
-function getPayloadConfigFromPayload(config: ChartConfig, payload: unknown, key: string) {
+const getPayloadConfigFromPayload = (config: ChartConfig, payload: unknown, key: string) => {
   if (typeof payload !== "object" || payload === null) {
     return undefined;
   }
@@ -298,6 +310,8 @@ function getPayloadConfigFromPayload(config: ChartConfig, payload: unknown, key:
   }
 
   return configLabelKey in config ? config[configLabelKey] : config[key as keyof typeof config];
-}
+};
 
 export { ChartContainer, ChartTooltip, ChartTooltipContent, ChartLegend, ChartLegendContent, ChartStyle };
+
+

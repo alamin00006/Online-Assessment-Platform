@@ -25,6 +25,7 @@ const toggleVariants = cva(
   },
 );
 
+// Renders the Toggle component with forwarded ref support.
 const Toggle = React.forwardRef<
   React.ElementRef<typeof TogglePrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof TogglePrimitive.Root> & VariantProps<typeof toggleVariants>
@@ -35,3 +36,5 @@ const Toggle = React.forwardRef<
 Toggle.displayName = TogglePrimitive.Root.displayName;
 
 export { Toggle, toggleVariants };
+
+

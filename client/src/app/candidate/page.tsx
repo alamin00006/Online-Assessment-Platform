@@ -1,12 +1,18 @@
-"use client";
+﻿"use client";
 
-import { ProtectedRoute } from "@/components/ProtectedRoute";
-import CandidateDashboard from "@/components/pages/CandidateDashboard";
+import { ProtectedRoute } from "@/components/shared";
+import CandidateDashboard from "@/features/candidate/CandidateDashboard";
 
-export default function CandidatePage() {
+// Protects and renders the candidate dashboard route.
+const CandidatePage = () => {
   return (
     <ProtectedRoute requiredRole="candidate">
       <CandidateDashboard />
     </ProtectedRoute>
   );
-}
+};
+
+export default CandidatePage;
+
+
+

@@ -1,49 +1,35 @@
-"use client";
-
-// Root layout for the interview task frontend application.
-// This file sets up global providers and page metadata used throughout the client.
+﻿// This file defines the server root layout and global metadata for the app.
+import type { Metadata } from "next";
+import { DM_Sans, Space_Grotesk } from "next/font/google";
 import "./globals.css";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { Toaster } from "sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { useState } from "react";
+import { AppProviders } from "./providers";
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  const [queryClient] = useState(() => new QueryClient());
+const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-space-grotesk",
+});
 
+const dmSans = DM_Sans({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-dm-sans",
+});
+
+export const metadata: Metadata = {
+  title: "AssessHub - Online Assessment Platform",
+  description: "Secure online assessment platform for employers and candidates.",
+};
+
+// Provides global providers and document metadata for the client application.
+const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <html lang="en">
-      <head>
-        <meta charSet="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>AssessHub - Online Assessment Platform</title>
-        <meta
-          name="description"
-          content="Secure online assessment platform for employers and candidates."
-        />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap"
-          rel="stylesheet"
-        />
-      </head>
-      <body>
-        <QueryClientProvider client={queryClient}>
-          <TooltipProvider>
-            <Toaster />
-            {children}
-          </TooltipProvider>
-        </QueryClientProvider>
+      <body className={`${spaceGrotesk.variable} ${dmSans.variable}`}>
+        <AppProviders>{children}</AppProviders>
       </body>
     </html>
   );
-}
+};
+
+export default RootLayout;

@@ -2,11 +2,14 @@ import * as React from "react";
 
 const MOBILE_BREAKPOINT = 768;
 
-export function useIsMobile() {
+// Provides use Is Mobile behavior for reusable component logic.
+export const useIsMobile = () => {
   const [isMobile, setIsMobile] = React.useState<boolean | undefined>(undefined);
 
+  // Subscribes to viewport changes to keep mobile detection current.
   React.useEffect(() => {
     const mql = window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT - 1}px)`);
+    // Keeps responsive state aligned with the current viewport width.
     const onChange = () => {
       setIsMobile(window.innerWidth < MOBILE_BREAKPOINT);
     };
@@ -16,4 +19,4 @@ export function useIsMobile() {
   }, []);
 
   return !!isMobile;
-}
+};

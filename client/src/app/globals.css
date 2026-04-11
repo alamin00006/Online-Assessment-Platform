@@ -2,8 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap');
-
 @layer base {
   :root {
     --background: 220 20% 97%;
@@ -75,8 +73,8 @@
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
 
-    --font-display: 'Space Grotesk', sans-serif;
-    --font-body: 'DM Sans', sans-serif;
+    --font-display: var(--font-space-grotesk), sans-serif;
+    --font-body: var(--font-dm-sans), sans-serif;
   }
 
   .dark {

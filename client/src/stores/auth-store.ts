@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { User } from "@/types";
 
-// Authentication store persists user session for the interview task frontend.
+// Authentication store persists user session for the assessment client.
 // It stores token, user info, loading state, and errors.
 interface AuthState {
   user: User | null;

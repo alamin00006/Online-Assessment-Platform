@@ -1,12 +1,17 @@
-"use client";
-// Wrapper page for employer exam creation in the interview task frontend.
-import { ProtectedRoute } from "@/components/ProtectedRoute";
-import CreateExam from "@/components/pages/CreateExam";
+﻿// Page for employer exam creation.
+import { ProtectedRoute } from "@/components/shared";
+import CreateExam from "@/features/employer/CreateExam";
 
-export default function CreateExamPage() {
+// Protects and renders the employer exam creation route.
+const CreateExamPage = () => {
   return (
     <ProtectedRoute requiredRole="employer">
       <CreateExam />
     </ProtectedRoute>
   );
-}
+};
+
+export default CreateExamPage;
+
+
+

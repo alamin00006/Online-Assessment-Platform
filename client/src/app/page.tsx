@@ -1,6 +1,6 @@
 "use client";
 
-// Landing page for the interview task platform.
+// Landing page for the assessment platform platform.
 // Redirects authenticated users to their role-specific dashboard.
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -8,10 +8,12 @@ import { useAuthStore } from "@/stores/auth-store";
 import { Button } from "@/components/ui/button";
 import { Building2, GraduationCap, Shield } from "lucide-react";
 
-export default function Index() {
+// Renders the landing page and routes authenticated users to their dashboard.
+const Index = () => {
   const router = useRouter();
   const { isAuthenticated, user } = useAuthStore();
 
+  // Redirects authenticated users away from the landing page.
   useEffect(() => {
     if (isAuthenticated && user) {
       router.push(user.role === "employer" ? "/employer" : "/candidate");
@@ -58,4 +60,6 @@ export default function Index() {
       </div>
     </div>
   );
-}
+};
+
+export default Index;

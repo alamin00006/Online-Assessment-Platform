@@ -3,12 +3,19 @@ import { useExamSessionStore } from "@/stores/exam-session-store";
 
 // Custom timer hook used during candidate exam attempts.
 // It tracks remaining seconds and triggers timeout behavior when the exam ends.
-export function useTimer(onTimeout: () => void) {
-  const timeRemaining = useExamSessionStore((s) => s.timeRemaining);
-  const setTimeRemaining = useExamSessionStore((s) => s.setTimeRemaining);
-  const isSubmitted = useExamSessionStore((s) => s.isSubmitted);
+export const useTimer = (onTimeout: () => void) => {
+  const timeRemaining = useExamSessionStore(
+    (examSessionState) => examSessionState.timeRemaining,
+  );
+  const setTimeRemaining = useExamSessionStore(
+    (examSessionState) => examSessionState.setTimeRemaining,
+  );
+  const isSubmitted = useExamSessionStore(
+    (examSessionState) => examSessionState.isSubmitted,
+  );
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
+  // Stops the active timer interval and clears the stored reference.
   const stop = useCallback(() => {
     if (intervalRef.current) {
       clearInterval(intervalRef.current);
@@ -16,6 +23,7 @@ export function useTimer(onTimeout: () => void) {
     }
   }, []);
 
+  // Runs the countdown interval and triggers timeout behavior when needed.
   useEffect(() => {
     if (isSubmitted || timeRemaining <= 0) {
       stop();
@@ -47,4 +55,4 @@ export function useTimer(onTimeout: () => void) {
     formatted: `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`,
     stop,
   };
-}
+};
