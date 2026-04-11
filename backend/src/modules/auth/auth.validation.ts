@@ -1,0 +1,15 @@
+import { z } from "zod";
+
+// Validation rules for authentication endpoints.
+export const registerSchema = z.object({
+  name: z.string().min(2),
+  email: z.string().email(),
+  password: z.string().min(6),
+  role: z.enum(["employer", "candidate"]),
+  employeeId: z.string().optional(),
+});
+
+export const loginSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(1),
+});

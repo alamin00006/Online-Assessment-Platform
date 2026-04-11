@@ -1,75 +1,89 @@
-# AssessHub - Online Assessment Platform
+# IBOS - Online Assessment Platform
 
-A secure online assessment platform built with Next.js, TypeScript, and Tailwind CSS for employers and candidates.
+A full-stack online assessment platform built with Node.js/Express backend and Next.js frontend.
 
-## Features
-
-- **Employer Dashboard**: Create and manage exams
-- **Candidate Portal**: Take exams with timer and monitoring
-- **Authentication**: Secure login for both roles
-- **Rich Text Editor**: For creating questions
-- **Real-time Monitoring**: Tab switch and fullscreen detection
-- **Responsive Design**: Works on all devices
-
-## Getting Started
+## Quick Start with Docker
 
 ### Prerequisites
 
-- Node.js 18+
-- npm or yarn
+- Docker and Docker Compose installed
 
-### Installation
+### Running the Application
 
-1. Clone the repository
-2. Install dependencies:
+1. **Clone the repository and navigate to the project directory**
 
    ```bash
-   npm install
+   cd ibos
    ```
 
-3. Run the development server:
+2. **Start all services**
 
    ```bash
-   npm run dev
+   docker-compose up -d
    ```
 
-4. Open [http://localhost:3000](http://localhost:3000) in your browser.
+3. **View logs (optional)**
 
-## Project Structure
+   ```bash
+   docker-compose logs -f
+   ```
 
-- `src/app/` - Next.js app router pages
-- `src/components/` - Reusable UI components
-- `src/stores/` - Zustand state management
-- `src/hooks/` - Custom React hooks
-- `src/services/` - API services (currently mock data)
-- `src/types/` - TypeScript type definitions
+4. **Access the application**
+   - Frontend: http://localhost:3000
+   - Backend API: http://localhost:8000
+   - MongoDB: localhost:27017
 
-## Technologies Used
+### Development
 
-- **Framework**: Next.js 14 with App Router
-- **Language**: TypeScript
-- **Styling**: Tailwind CSS
-- **UI Components**: Radix UI + shadcn/ui
-- **State Management**: Zustand
-- **Data Fetching**: TanStack Query
-- **Rich Text**: Tiptap
-- **Icons**: Lucide React
+For development with hot reloading:
 
-## Scripts
+```bash
+# Backend only
+cd backend && npm run dev
 
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run start` - Start production server
-- `npm run lint` - Run ESLint
+# Frontend only
+cd client && npm run dev
 
-## Contributing
+# Database only
+docker-compose up mongodb -d
+```
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Run tests and linting
-5. Submit a pull request
+### Environment Variables
 
-## License
+Copy `.env.example` to `.env` and configure:
 
-This project is licensed under the MIT License.
+```bash
+# Backend
+MONGODB_URI=mongodb://admin:password123@localhost:27017/ibos
+JWT_SECRET=your-super-secret-jwt-key
+PORT=8000
+
+# Frontend
+NEXT_PUBLIC_API_URL=http://localhost:8000/api
+```
+
+### Services
+
+- **MongoDB**: Database service
+- **Backend**: Express.js API server
+- **Frontend**: Next.js application
+
+### Useful Commands
+
+```bash
+# Stop all services
+docker-compose down
+
+# Rebuild and restart
+docker-compose up --build
+
+# View running containers
+docker-compose ps
+
+# Clean up
+docker-compose down -v --remove-orphans
+```
+
+## Manual Setup (without Docker)
+
+See individual README files in `backend/` and `client/` directories.

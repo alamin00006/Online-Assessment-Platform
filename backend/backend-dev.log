@@ -1,0 +1,37 @@
+
+> assesshub-backend@1.0.0 dev
+> tsx watch src/server.ts
+
+MongoDB connected
+Backend listening on http://localhost:8000
+[0mGET /api/health [32m200[0m 1.811 ms - 47[0m
+9:56:44 AM [tsx] change in ./src\modules\attempt\attempt.route.ts Restarting...
+cMongoDB connected
+Backend listening on http://localhost:8000
+[0mGET /api/exams [33m401[0m 5.133 ms - 53[0m
+[0mGET /api/attempts [33m401[0m 0.905 ms - 53[0m
+[0mGET /api [33m404[0m 0.506 ms - 55[0m
+[0mGET /favicon.ico [33m404[0m 0.412 ms - 63[0m
+[0mGET /api/exams [33m401[0m 0.568 ms - 53[0m
+[0mGET /api/attempts [33m401[0m 0.656 ms - 53[0m
+[0mGET /api/exams [33m401[0m 0.258 ms - 53[0m
+[0mGET /api/attempts [33m401[0m 0.619 ms - 53[0m
+[0mGET /api/exams [33m401[0m 0.375 ms - 53[0m
+[0mGET /api/attempts [33m401[0m 0.581 ms - 53[0m
+[0mGET /api/exams [33m401[0m 0.257 ms - 53[0m
+[0mGET /api/attempts [33m401[0m 0.265 ms - 53[0m
+[0mGET /api/exams [33m401[0m 0.237 ms - 53[0m
+[0mGET /api/attempts [33m401[0m 0.305 ms - 53[0m
+[0mGET /api/exams [33m401[0m 0.209 ms - 53[0m
+[0mGET /api/attempts [33m401[0m 0.280 ms - 53[0m
+[0mGET /api/health [32m200[0m 0.798 ms - 47[0m
+[0mPOST /api/auth/login [32m200[0m 117.805 ms - 396[0m
+10:04:24 AM [tsx] change in ./src\app.ts Restarting...
+cMongoDB connected
+Backend listening on http://localhost:8000
+[0mGET /api/health [32m200[0m 1.933 ms - 47[0m
+[0mGET /api [33m404[0m 0.954 ms - 55[0m
+[0mGET /favicon.ico [33m404[0m 0.235 ms - 63[0m
+10:16:47 AM [tsx] change in ./src\modules\attempt\attempt.model.ts Rerunning...
+cMongoDB connected
+Backend listening on http://localhost:8000
